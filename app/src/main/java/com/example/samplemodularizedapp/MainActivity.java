@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
 
                 DummyCore dummy = new DummyCore();
-                String result = dummy.sumThings(getBaseContext());
+                String result = dummy.sumThings();
                 Snackbar.make(view, result, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }

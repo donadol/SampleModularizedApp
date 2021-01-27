@@ -6,14 +6,14 @@ import android.util.Log;
 import java.lang.reflect.Method;
 
 public class DummyCore {
-    public static String sumThings(Context context){
+    public static String sumThings(){
         if (isPresent("com.example.face.DummyFace")) {
             // This block will never execute when the dependency is not present
             // There is therefore no more risk of code throwing NoClassDefFoundException.
             try {
                 Class face = Class.forName("com.example.face.DummyFace");
-                Log.i("DUMMY_CORE", "encontrado");
-                String result = invokeMethodWithArgs(face, "dummyFunc", new Class<?>[0], null, context);
+                Log.i("DUMMY_CORE", "found: "+face);
+                String result = invokeMethodWithArgs(face, "dummyFunc", null);
                 // invokeMethodWithArgs(face, "installActivity", Context.class, null, context);
                 return result;
             } catch (ClassNotFoundException e) {
@@ -21,7 +21,7 @@ public class DummyCore {
             }
         }
 
-        return "No encontrado";
+        return "No found";
     }
 
     public static boolean isPresent(String className) {
@@ -35,14 +35,14 @@ public class DummyCore {
         }
     }
 
-    private static <T> T invokeMethodWithArgs(Class<?> clazz, String methodName, Class<?> argTypes, Object target, Object... params) {
+    private static <T> T invokeMethodWithArgs(Class<?> clazz, String methodName, Object target) {
         try {
-            Method method = clazz.getDeclaredMethod(methodName, argTypes);
+            Method method = clazz.getDeclaredMethod(methodName);
             Log.i("DUMMY_CORE", method.getName());
             if (!method.isAccessible()) {
                 method.setAccessible(true);
             }
-            return (T) method.invoke(target, params);
+            return (T) method.invoke(target);
         } catch (Exception e) {
             return null;
         }
